@@ -1,10 +1,14 @@
 require('dotenv').config();
 
-const express    = require('express');
-const app        = express();
-const mongoose   = require('mongoose');
+const express      = require('express');
+const app          = express();
+const mongoose     = require('mongoose');
+const bodyParser   = require('body-parser');
+const cookieParser = require('cookie-parser');
+const cors         = require('cors');
 
-
+//Load router modules
+const authRoutes   = require('./routes/auth');
 
 //DB Connection
 mongoose
@@ -20,11 +24,14 @@ mongoose
         console.log(Error, err.message);
     });
 
-    
-app.get("/",(req,res)=>{
-    res.send("Yo");
-});
 
+//Middlewares
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(cors());
+    
+//My Routes
+app.use('/api',authRoutes);
 
 //PORT
 const port = process.env.PORT || 3000; 
