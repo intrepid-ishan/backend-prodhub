@@ -3,6 +3,7 @@ const { validationResult } = require('express-validator');
 var jwt                    = require('jsonwebtoken');
 var expressJwt             = require('express-jwt');
 
+//signup
 exports.signup = (req,res) => {
 
     const errors = validationResult(req);
@@ -21,6 +22,7 @@ exports.signup = (req,res) => {
     });
 };
 
+//signin
 exports.signin = (req,res) => {
     const { email, password } =  req.body;
     
@@ -59,6 +61,7 @@ exports.signin = (req,res) => {
 
 };
 
+//signout
 exports.signout = (req,res) => {
     res.clearCookie('token');
     return res.json({
@@ -66,16 +69,17 @@ exports.signout = (req,res) => {
     });
 }; 
 
-//protected Routes
-exports.isSignedIn = expressJwt({
+
+//MW: isSignedIn
+exports.isSignedIn = expressJwt({ //if(auth) then signed in
     secret: process.env.SECRET,
     userProperty: "auth",
     algorithms: ['HS256']
 });  
 
-//custom middlewares
+//MW: isAuthenticated
 exports.isAuthenticated = (req,res,next) => {
-    let checker = req.profile && req.auth && req.profile._id === req.auth;
+    let checker = req.profile && req.auth && req.profile._id == req.auth._id;
     if(!checker){
         return res.status(403).json({
             error: 'ACCESS DENIED'
@@ -84,7 +88,7 @@ exports.isAuthenticated = (req,res,next) => {
     next();
 };
 
-
+//MW: isAdmin
 exports.isAdmin = (req,res,next) => {
     if(req.profile.role === 0){
         return res.status(403).json({
