@@ -20,7 +20,7 @@ router.param("productId", getProductById);
 
 //all of actual routes
 //create product
-router.post('/products/create/:userId',
+router.post('/product/create/:userId',
     isSignedIn,
     isAuthenticated,
     isAdmin,
