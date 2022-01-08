@@ -15,18 +15,17 @@ const productRoutes = require('./routes/product');
 
 //DB Connection
 mongoose
-    .connect(process.env.DATABASE, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useCreateIndex: true
-    })
-    .then(() => {
-        console.log("DB CONNECTED");
-    })
-    .catch(err => {
-        console.log(Error, err.message);
-    });
-
+  .connect(process.env.DATABASE, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true
+  })
+  .then(() => {
+    console.log('DB CONNECTED');
+  })
+  .catch((err) => {
+    console.log(Error, err.message);
+  });
 
 //Middleware
 app.use(bodyParser.json());
@@ -44,5 +43,5 @@ const port = process.env.PORT || 3000;
 
 //Starting a server
 app.listen(port, () => {
-    console.log(`app is running at ${port}`);
+  console.log(`app is running at ${port}`);
 });
